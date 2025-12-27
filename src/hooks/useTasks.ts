@@ -22,7 +22,7 @@ interface UseTasksState {
   updateTask: (id: string, patch: Partial<Task>) => void;
   deleteTask: (id: string) => void;
   undoDelete: () => void;
-  clearLastDeleted: () => void; // ✅ ADDED
+  clearLastDeleted: () => void; 
 }
 
 const INITIAL_METRICS: Metrics = {
@@ -103,6 +103,12 @@ export function useTasks(): UseTasksState {
       isMounted = false;
     };
   }, []);
+
+  useEffect(() => {
+    if (loading) return;
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks, loading]);
+  
 
   const derivedSorted = useMemo<DerivedTask[]>(() => {
     const withRoi = tasks.map(withDerived);
